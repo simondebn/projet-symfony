@@ -40,15 +40,10 @@
 
     Install : 
     ```shell
-    composer require annotations
+    composer require annotations doctrine maker [...]
     ```       
-## Controllers & Routes
-
-1. Install annotations : 
-
-     
-    
-2. Controller : 
+## Controllers & Routes    
+1. Controller : 
 
     Exemple simple: 
     ```php
@@ -68,4 +63,9 @@
             return $this->render("base.html.twig");
         }
     }
+    ```
+2. Create via terminal : 
+
+    ```shell
+    php bin/console make:controller
     ```
