@@ -1,0 +1,16 @@
+{% extends 'blog/blog_base.html.twig' %}
+
+{% block content %}
+    <div class="section">
+        <div class="row">
+            <div>
+                {{ form_start(form) }}
+                {{ form_row(form.title) }}
+                {{ form_row(form.theme) }}
+                {{ form_row(form.abstract) }}
+                {{ form_row(form.body) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

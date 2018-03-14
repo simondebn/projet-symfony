@@ -1,54 +1,77 @@
-{% extends 'base.html.twig' %}
+{% extends 'blog/blog_base.html.twig' %}
 
 {% block title %}
-    {{ controller_name }}
+    {% if controller_name is defined %}
+        {{ controller_name }}
+    {% endif %}
 {% endblock %}
 
-{% block nav %}
-    <nav class="white blog-menu" role="navigation">
-        <div class="nav-wrapper container">
-            <a id="logo-container" href="#" class="brand-logo">SPACE-BLOG</a>
-            <ul class="right hide-on-med-and-down">
-                <li><a href="#">Article</a></li>
-                <li><a href="#">Evenement</a></li>
-                <li><a href="#">News</a></li>
-                <li>
-                    {% if app.user %}
-                        <a href="{{ path('logout') }}">Logout -
-                            <small>{{ app.user.username }}</small>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('login') }}">Login</a>
-                    {% endif %}
-                </li>
-                <li>
-                    {% if not app.user %}
-                        <a href="{{ path('register') }}">Register</a>
-                    {% endif %}
-                </li>
-            </ul>
 
-            <ul id="nav-mobile" class="sidenav">
-                <li><a href="#">Article</a></li>
-                <li><a href="#">Evenement</a></li>
-                <li><a href="#">News</a></li>
-                <li>
-                    {% if app.user %}
-                        <a href="{{ path('logout') }}">Logout -
-                            <small>{{ app.user.username }}</small>
-                        </a>
-                    {% else %}
-                        <a href="{{ path('login') }}">Login</a>
-                    {% endif %}
-                </li>
-                <li>
-                    {% if not app.user %}
-                        <a href="{{ path('register') }}">Register</a>
-                    {% endif %}
-                </li>
-            </ul>
-            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+{% block content %}
+    {% if articles is defined %}
+        <div class="section">
+            <div class="row">
+                {% for article in articles %}
+                    <div class="col s12 m6 l4 xl4">
+                        <div class="card small article">
+                            <div class="card-content flow-text">
+                            <span class="card-title"><a
+                                        href="{{ path('article', {'id': article.id}) }}">{{ article.title }}</a></span>
+                                <p>{{ article.abstract |nl2br }} ...</p>
+
+                            </div>
+                            <div class="card-action">
+                                <small class="orange-text accent-2">
+                                    {{ article.author | upper }} | le {{ article.date | date("d/m/Y") }}
+                                </small>
+                                <small style="display: block">{{ article.theme | upper }}</small>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
-    </nav>
+
+    {% else %}
+
+
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.body |nl2br }}</p>
+        <small>
+            Auteur : {{ article.author }} | le {{ article.date | date("d/m/Y") }} | {{ article.theme }}
+        </small>
+
+        <div class="section">
+            <div class="row">
+
+                <div class="col m4 l3">
+                    <div>
+                        <p>Comments</p>
+                        {{ form_start(form) }}
+                        {{ form_errors(form) }}
+                        {#{{ form_row(form.author, { 'label': false, 'attr': {'placeholder': 'Name'} }) }}#}
+                        {{ form_row(form.body, {'label': false, 'attr': {'placeholder': 'Comment', 'class':'materialize-textarea'} }) }}
+                        <button class="btn waves-effect waves-light" value="submit" type="submit">Submit<i
+                                    class="material-icons right">send</i></button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+
+            {% for comment in article.comments %}
+                <div>
+                    <p>
+                        <small class="comment_title">{{ comment.author }}
+                            | {{ comment.date | date("d/m/Y") }}</small>
+                        <br>
+                        <small>{{ comment.body |nl2br }}</small>
+                    </p>
+                </div>
+            {% endfor %}
+
+
+        </div>
+    {% endif %}
 
 {% endblock %}
+

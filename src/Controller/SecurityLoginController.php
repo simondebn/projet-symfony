@@ -25,6 +25,14 @@ class SecurityLoginController extends Controller
     }
 
     /**
+     * @Route("/", name="redirect_home")
+     */
+    public function redirectHome()
+    {
+        return $this->redirectToRoute('blog');
+    }
+
+    /**
      * La route pour se deconnecter.
      * Mais celle ci ne doit jamais être executé car symfony l'interceptera avant.
      * @Route("/logout", name="logout")

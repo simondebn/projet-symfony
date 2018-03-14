@@ -55,3 +55,7 @@ footer.page-footer {
 #login-form {
     margin-top: 2rem;
 }
+
+.article {
+    cursor: pointer;
+}
