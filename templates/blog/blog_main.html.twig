@@ -42,27 +42,27 @@
         </small>
 
         <div class="section">
-            <div class="row">
-
-                <div class="col m4 l3">
-                    <div>
-                        <p>Comments</p>
-                        {{ form_start(form) }}
-                        {{ form_errors(form) }}
-                        {#{{ form_row(form.author, { 'label': false, 'attr': {'placeholder': 'Name'} }) }}#}
-                        {{ form_row(form.body, {'label': false, 'attr': {'placeholder': 'Comment', 'class':'materialize-textarea'} }) }}
-                        <button class="btn waves-effect waves-light" value="submit" type="submit">Submit<i
-                                    class="material-icons right">send</i></button>
-                        {{ form_end(form) }}
+            {% if is_granted('ROLE_USER') %}
+                <div class="row">
+                    <div class="col m4 l3">
+                        <div>
+                            <p>Comments</p>
+                            {{ form_start(form) }}
+                            {{ form_errors(form) }}
+                            {{ form_row(form.body, {'label': false, 'attr': {'placeholder': 'Comment', 'class':'materialize-textarea'} }) }}
+                            <button class="btn waves-effect waves-light" value="submit" type="submit">Submit
+                                <i class="material-icons right">send</i>
+                            </button>
+                            {{ form_end(form) }}
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% endif %}
 
             {% for comment in article.comments %}
                 <div>
                     <p>
-                        <small class="comment_title">{{ comment.author }}
-                            | {{ comment.date | date("d/m/Y") }}</small>
+                        <small class="comment_title">{{ comment.author }} | {{ comment.date | date("d/m/Y") }}</small>
                         <br>
                         <small>{{ comment.body |nl2br }}</small>
                     </p>

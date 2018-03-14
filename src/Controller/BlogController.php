@@ -44,11 +44,14 @@ class BlogController extends Controller
         if (!$article) {
             throw $this->createNotFoundException('L\'article n°' . $id . ' n\'existe pas !');
         }
-
         # Add Comment
         $comment = new Comment();
-        $userName = $this->getUser()->getUsername();
-        $comment->setAuthor($userName);
+
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') ||
+            $this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $userName = $this->getUser()->getUsername();
+            $comment->setAuthor($userName);
+        }
 
         $form = $this->createForm(CommentType::class, $comment);
         $form->handleRequest($request);
