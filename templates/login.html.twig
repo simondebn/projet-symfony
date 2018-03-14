@@ -1,0 +1,38 @@
+{% extends 'blog/blog_main.html.twig' %}
+
+{% block title %}
+    {{ controller_name }}
+{% endblock %}
+
+{% block nav %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+
+    {% if error %}
+        <div class="alert alert-danger">
+            {{ error.messageKey }}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col s6 offset-s3">
+            <div id="login-form">
+                <form action="{{ path('login') }}" method="post">
+                    <div>
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="_username" value="{{ last_username }}"/>
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="_password"/>
+                    </div>
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                    <button type="submit" class="waves-effect waves-light btn-small"><i class="material-icons right">send</i>Connexion</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

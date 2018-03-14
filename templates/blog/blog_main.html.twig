@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ controller_name }}
+{% endblock %}
+
+{% block nav %}
+    <nav class="white blog-menu" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo">SPACE-BLOG</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="#">Article</a></li>
+                <li><a href="#">Evenement</a></li>
+                <li><a href="#">News</a></li>
+                <li>
+                    {% if app.user %}
+                        <a href="{{ path('logout') }}">Logout -
+                            <small>{{ app.user.username }}</small>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('login') }}">Login</a>
+                    {% endif %}
+                </li>
+                <li>
+                    {% if not app.user %}
+                        <a href="{{ path('register') }}">Register</a>
+                    {% endif %}
+                </li>
+            </ul>
+
+            <ul id="nav-mobile" class="sidenav">
+                <li><a href="#">Article</a></li>
+                <li><a href="#">Evenement</a></li>
+                <li><a href="#">News</a></li>
+                <li>
+                    {% if app.user %}
+                        <a href="{{ path('logout') }}">Logout -
+                            <small>{{ app.user.username }}</small>
+                        </a>
+                    {% else %}
+                        <a href="{{ path('login') }}">Login</a>
+                    {% endif %}
+                </li>
+                <li>
+                    {% if not app.user %}
+                        <a href="{{ path('register') }}">Register</a>
+                    {% endif %}
+                </li>
+            </ul>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+        </div>
+    </nav>
+
+{% endblock %}

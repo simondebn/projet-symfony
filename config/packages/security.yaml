@@ -3,13 +3,34 @@ security:
     encoders:
             App\Entity\User: bcrypt
     providers:
-        in_memory: { memory: ~ }
+        database_users:
+            entity: { class: App\Entity\User, property: username }
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            pattern: ^/
             anonymous: true
+            form_login:
+                # Le nom de la route de la page de connexion
+                check_path: login
+                # Le nom de la route où se trouve le formulaire de connexion
+                # Si un utilisateur tente d'acceder à une page protégée sans en avoir les droits
+                # il sera redirigé sur cette page
+                login_path: login
+                # Securisation des formulaires
+                csrf_token_generator: security.csrf.token_manager
+                # La page par defaut apres une connexion reussie
+                default_target_path: /blog
+            logout:
+                # La route où se trouve le process de deconnexion
+                path: logout
+                # La route sur laquelle doit etre rediriger l'utilisateur apres une deconnexion
+                target: /blog
+    role_hierarchy:
+               ROLE_REDAC: [ROLE_USER, ROLE_REDAC]
+               ROLE_ADMIN: [ROLE_ADMIN, ROLE_REDAC, ROLE_USER]
 
             # activate different ways to authenticate
 

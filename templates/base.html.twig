@@ -21,10 +21,10 @@
 </head>
 <body>
 
-    {% block body %}
-
+{% block body %}
     {% block nav %}
     {% endblock %}
+<div class="container">
 
     {% block content %}
     {% endblock %}
@@ -35,14 +35,15 @@
 
 
     {% block javascripts %}
-    {#<!--JavaScript-->#}
-    <script type="text/javascript" src="{{ asset("js/jquery-3.3.1.min.js") }}"></script>
-    <script type="text/javascript" src="{{ asset("js/materialize.js") }}"></script>
-    <script type="text/javascript" src="{{ asset("js/init.js") }}"></script>
+        {#<!--JavaScript-->#}
+        <script type="text/javascript" src="{{ asset("js/jquery-3.3.1.min.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/materialize.js") }}"></script>
+        <script type="text/javascript" src="{{ asset("js/init.js") }}"></script>
     {% endblock %}
 
 
-    {% endblock %}
+{% endblock %}
+</div>
 </body>
 
 </html>
