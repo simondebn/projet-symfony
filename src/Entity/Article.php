@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bundle\FrameworkBundle\Tests\Fixtures\Validation\Category;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -38,10 +39,12 @@ class Article
      */
     private $abstract;
 
+
+
     /**
-     * @ORM\Column(name="theme", type="string")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Category", cascade={"persist"})
      */
-    private $theme;
+    private $categories;
 
     /**
      * @ORM\Column(name="title", type="string")
@@ -60,7 +63,6 @@ class Article
     private $date;
 
 
-
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="article")
      */
@@ -69,6 +71,7 @@ class Article
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->categories = new ArrayCollection();
         $this->setDate();
     }
 
@@ -169,20 +172,34 @@ class Article
         $this->abstract = $abstract;
     }
 
+
+
     /**
-     * @return mixed
+     * @param Category $category
+     * @return $this
      */
-    public function getTheme()
+    public function addCategory(Category $category)
     {
-        return $this->theme;
+        // Ici, on utilise l'ArrayCollection vraiment comme un tableau
+        $this->categories[] = $category;
+
+        return $this;
     }
 
     /**
-     * @param mixed $theme
+     * @param Category $category
      */
-    public function setTheme($theme): void
+    public function removeCategory(Category $category)
     {
-        $this->theme = $theme;
+        // Ici on utilise une méthode de l'ArrayCollection, pour supprimer la catégorie en argument
+        $this->categories->removeElement($category);
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
+    }
 }

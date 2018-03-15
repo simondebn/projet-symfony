@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Category;
 use App\Entity\Comment;
 use App\Form\ArticleType;
 use App\Form\CommentType;
@@ -16,6 +17,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class BlogController extends Controller
 {
+
+    /**
+     * @Route("/parallax", name="parallax")
+     */
+    public function parallax()
+    {
+        return $this->render('materialize_test.html.twig');
+    }
+
     /**
      * @Route("/", name="blog")
      */
@@ -30,7 +40,6 @@ class BlogController extends Controller
                 'controller_name' => 'Space-Blog'
             )
         );
-
     }
 
     /**
@@ -41,6 +50,10 @@ class BlogController extends Controller
         # Get article
         $depot = $this->getDoctrine()->getRepository(Article::class);
         $article = $depot->find($id);
+
+        # Get Categories
+        $categories = $article->getCategories();
+
         if (!$article) {
             throw $this->createNotFoundException('L\'article n°' . $id . ' n\'existe pas !');
         }
@@ -66,7 +79,7 @@ class BlogController extends Controller
         }
 
 
-        return $this->render('blog/blog_main.html.twig', array("article" => $article, 'form' => $form->createView()));
+        return $this->render('blog/blog_main.html.twig', array("article" => $article, 'categories' => $categories, 'form' => $form->createView()));
 
     }
 
@@ -82,6 +95,7 @@ class BlogController extends Controller
 
         $form =$this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $gestionnaire =$this->getDoctrine()->getManager();
@@ -97,8 +111,7 @@ class BlogController extends Controller
             return $this->redirectToRoute('article', array('id' => $article->getId()));
 
         } else {
-            return $this->render('blog/add_article.html.twig',
-                array('form' => $form->createView()));
+            return $this->render('blog/add_article.html.twig', array('form' => $form->createView()));
         }
     }
     /**
@@ -111,7 +124,7 @@ class BlogController extends Controller
 
         // Script pour créer les abstract des articles si insérés avec generateData
         /*foreach ($articles as $article){
-            $article->setAbstract();
+            $article->setAbstract((implode(' ', array_slice(explode(' ', $article->getBody()), 0, 10))));
             $gestionnaire = $this->getDoctrine()->getManager();
             $gestionnaire->persist($article);
             $gestionnaire->flush();

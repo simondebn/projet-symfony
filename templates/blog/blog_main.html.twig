@@ -8,23 +8,32 @@
 
 
 {% block content %}
+
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('img/astro-3.jpg') }}"></div>
+    </div>
+
     {% if articles is defined %}
-        <div class="section">
-            <div class="row">
+        <div class="container">
+            <div class="section row">
                 {% for article in articles %}
                     <div class="col s12 m6 l4 xl4">
                         <div class="card small article">
-                            <div class="card-content flow-text">
-                            <span class="card-title"><a
-                                        href="{{ path('article', {'id': article.id}) }}">{{ article.title }}</a></span>
-                                <p>{{ article.abstract |nl2br }} ...</p>
-
+                            <div class="card-content">
+                                    <span class="card-title">
+                                        <a href="{{ path('article', {'id': article.id}) }}">{{ article.title }}</a>
+                                    </span>
+                                <p class="flow-text">{{ article.abstract |nl2br }} ...</p>
+                                <small>
+                                    {% for category in article.categories %}
+                                        {{ category.name }}
+                                    {% endfor %}
+                                </small>
                             </div>
                             <div class="card-action">
                                 <small class="orange-text accent-2">
                                     {{ article.author | upper }} | le {{ article.date | date("d/m/Y") }}
                                 </small>
-                                <small style="display: block">{{ article.theme | upper }}</small>
                             </div>
                         </div>
                     </div>
@@ -32,46 +41,57 @@
             </div>
         </div>
 
+
     {% else %}
+        <div class="container">
+            <h2>{{ article.title }}</h2>
+            <small>
+                {% for category in article.categories %}
+                    {{ category.name }}
+                {% endfor %}
+            </small>
+            <p>{{ article.body |nl2br }}</p>
+
+            <small>
+                Auteur : {{ article.author }} | le {{ article.date | date("d/m/Y") }} |
+            </small>
 
 
-        <h2>{{ article.title }}</h2>
-        <p>{{ article.body |nl2br }}</p>
-        <small>
-            Auteur : {{ article.author }} | le {{ article.date | date("d/m/Y") }} | {{ article.theme }}
-        </small>
-
-        <div class="section">
-            {% if is_granted('ROLE_USER') %}
-                <div class="row">
-                    <div class="col m4 l3">
-                        <div>
-                            <p>Comments</p>
-                            {{ form_start(form) }}
-                            {{ form_errors(form) }}
-                            {{ form_row(form.body, {'label': false, 'attr': {'placeholder': 'Comment', 'class':'materialize-textarea'} }) }}
-                            <button class="btn waves-effect waves-light" value="submit" type="submit">Submit
-                                <i class="material-icons right">send</i>
-                            </button>
-                            {{ form_end(form) }}
+            <div class="section">
+                {% if is_granted('ROLE_USER') %}
+                    <div class="row">
+                        <div class="col m4 l3">
+                            <div>
+                                <p>Comments</p>
+                                {{ form_start(form) }}
+                                {{ form_errors(form) }}
+                                {{ form_row(form.body, {'label': false, 'attr': {'placeholder': 'Comment', 'class':'materialize-textarea'} }) }}
+                                <button class="btn waves-effect waves-light" value="submit" type="submit">Submit
+                                    <i class="material-icons right">send</i>
+                                </button>
+                                {{ form_end(form) }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
 
-            {% for comment in article.comments %}
-                <div>
-                    <p>
-                        <small class="comment_title">{{ comment.author }} | {{ comment.date | date("d/m/Y") }}</small>
-                        <br>
-                        <small>{{ comment.body |nl2br }}</small>
-                    </p>
-                </div>
-            {% endfor %}
-
-
+                {% for comment in article.comments %}
+                    <div>
+                        <p>
+                            <small class="comment_title">{{ comment.author }}
+                                | {{ comment.date | date("d/m/Y") }}</small>
+                            <br>
+                            <small>{{ comment.body |nl2br }}</small>
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     {% endif %}
+
+    <div class="parallax-container">
+        <div class="parallax"><img src="{{ asset('img/astro-2.jpg') }}"></div>
+    </div>
 
 {% endblock %}
 

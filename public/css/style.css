@@ -12,6 +12,11 @@ p {
 }
 
 .parallax-container {
+    height: 400px;
+}
+
+/*
+.parallax-container {
     min-height: 380px;
     line-height: 0;
     height: auto;
@@ -38,6 +43,7 @@ p {
         top: 0;
     }
 }
+*/
 
 .icon-block {
     padding: 0 15px;
@@ -52,10 +58,21 @@ footer.page-footer {
 }
 /* End Materialize's CSS */
 
-#login-form {
-    margin-top: 2rem;
-}
-
 .article {
     cursor: pointer;
+}
+
+.register-form {
+    min-height: 60vh;
+    padding-top: 10%;
+}
+
+.centrer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.centrer-item {
+    max-width: 50%;
 }

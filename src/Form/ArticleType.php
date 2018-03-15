@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Article;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,7 +18,10 @@ class ArticleType extends AbstractType
     {
         $builder
             ->add('title', TextType::class)
-            ->add('theme', TextType::class)
+            ->add('categories', EntityType::class, array(
+                'class' => 'App\Entity\Category',
+                'multiple' => true,
+                'choice_label' => 'name'))
             ->add('abstract', TextareaType::class, array('required' => false))
             ->add('body', TextareaType::class)
             ->add('save', SubmitType::class)
